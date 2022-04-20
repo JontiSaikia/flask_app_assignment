@@ -144,8 +144,10 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             login_user(user)
+            flash('You have logged in Now you are able to upload the excel file and download it in your backend as csv')
             return redirect(url_for('dashboard'))
         else:
+            flash('You have logged in Now you are able to upload the excel file and download it in your backend as csv but upto maximum 100 rows ')
             return redirect(url_for('public_dashboard'))
     return render_template('login.html', form=form)
 
