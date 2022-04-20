@@ -33,8 +33,21 @@
             {{ form.submit(class="btn btn-primary")}}
         </div>
     </form>
-
     <a href="{{ url_for('login') }}">Already have an account? Log In</a>
+    <div class= container w-50>
+        {% with messages = get_flashed_messages() %}
+             {% if messages %}
+              <ul class=flashes>
+                 {% for message in messages %}
+                     <div class="alert alert-{{category}}">
+                         {{ message }}
+                      </div>
+                 {% endfor %}
+              </ul>
+             {% endif %}
+         {% endwith %}
+     </div>
+
 </body>
 
 </html>
