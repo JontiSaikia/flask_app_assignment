@@ -225,8 +225,7 @@ def register():
             flash('You have registered now you can log in ')
             return redirect(url_for('login'))
         else:
-            flash("This email id is already registered , please use a different email id")
-
+            flash(f"This email id {new_user.email} is already registered , please use a different email id")
 
     return render_template('register.html', form=form)
 
