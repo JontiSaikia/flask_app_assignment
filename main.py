@@ -217,9 +217,14 @@ def register():
     if form.validate_on_submit():
         #hashed_password = bcrypt.generate_password_hash(form.password.data)
         new_user = User(username=form.username.data,email=form.email.data, password=form.password.data)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('login'))
+        if not new_user :
+            db.session.add(new_user)
+            db.session.commit()
+            flash('You have registered now you can log in ')
+            return redirect(url_for('login'))
+        else:
+            flash("This email id is already registered , please use a different email id")
+
 
     return render_template('register.html', form=form)
 
