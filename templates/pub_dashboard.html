@@ -2,4 +2,17 @@
     <input type="file" name="uploadfile" value=""  accept=".xlsx,.xls">
     <input type = "submit" name="" value="Submit">
 </form>
-<p><h1>This page is for unauthenticated users, you can download only 100 rows in your .csv output </h1></P>
+ <div class= container w-50>
+        {% with messages = get_flashed_messages() %}
+             {% if messages %}
+              <ul class=flashes>
+                 {% for message in messages %}
+                     <div class="alert alert-{{category}}">
+                         {{ message }}
+                      </div>
+                 {% endfor %}
+              </ul>
+             {% endif %}
+         {% endwith %}
+     </div>
+<!--<p><h1>This page is for unauthenticated users, you can download only 100 rows in your .csv output </h1></P>-->
