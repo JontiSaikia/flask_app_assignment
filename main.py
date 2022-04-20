@@ -137,17 +137,22 @@ def public_data():
         return None
 
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            login_user(user)
-            flash('You have logged in Now you are able to upload the excel file and download it in your backend as csv')
-            return redirect(url_for('dashboard'))
+           if user.password ==form.password.data:
+                login_user(user)
+                flash('You have logged in succesfully ! Now you are able to upload the excel file and download it in your backend as csv')
+                return redirect(url_for('dashboard'))
+           else:
+               flash(' Invalid password! Try again')
+               return redirect(url_for('login'))
         else:
-            flash('You have logged in Now you are able to upload the excel file and download it in your backend as csv but upto maximum 100 rows ')
+            flash('You are not an authenticated user but you are able to upload the excel file and download it in your backend as csv but upto maximum 100 rows')
             return redirect(url_for('public_dashboard'))
     return render_template('login.html', form=form)
 
