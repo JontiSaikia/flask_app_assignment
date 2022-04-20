@@ -199,6 +199,7 @@ def data():
     if request.method == "POST":
         f = request.form['uploadfile'] #calling the name= uploadfile object from html
         data = pd.read_excel(f)
+        flash("Your excel file is converted to export.csv and downloaded automatically on your main directory")
         return render_template('data.html',data=data.to_csv('export.csv',index=False))
     else:
         return None
