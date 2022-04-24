@@ -1,0 +1,5 @@
+This is an user login page program using flask
+In this task mainly focused on the backend logic using python, not focused so much on the frontend. For frontend jinja templating is used. 
+It creates authorized user through a sign up page. User can login to its dashboard using email id and password. 
+An authenticate user can convert an excel file to csv file but an unauthenticated user cannot convert an excel to csv file more than 100 no. of rows.
+If the user forget the password it will provide a authentication token to the email id to recover the password.
