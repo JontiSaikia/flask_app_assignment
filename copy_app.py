@@ -111,8 +111,6 @@ class ResetPasswordForm(FlaskForm):
     confirm_password = PasswordField(label='Confirm Password',validators=[InputRequired(), EqualTo('password')])
     submit = SubmitField(label='Change Password',validators=[DataRequired()])
 
-
-
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -143,9 +141,15 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            login_user(user)
-            return redirect(url_for('dashboard'))
+           if user.password ==form.password.data:
+                login_user(user)
+                flash('You have logged in succesfully ! Now you are able to upload the excel file and download it in your backend as csv')
+                return redirect(url_for('dashboard'))
+           else:
+               flash(' Invalid password! Try again')
+               return redirect(url_for('login'))
         else:
+            flash('You are not an authenticated user but you are able to upload the excel file and download it in your backend as csv but upto maximum 100 rows')
             return redirect(url_for('public_dashboard'))
     return render_template('login.html', form=form)
 
@@ -153,9 +157,15 @@ def login():
 def send_mail(user):
     token=user.get_token()
     msg = Message('Password Reset request', sender = 'yourId@gmail.com', recipients = [user.email])
-    msg.body = f"Hello reset message sent from Flask app{url_for('reset_token',token=token,_external=True)}"
+    #msg.body = f"Hello reset message sent from Flask app! {url_for('reset_token',token=token, _external=True)}"
+    
+    link = url_for('reset_token', token=token, _external=True)
+
+    msg.body = 'Your reset password link is {}'.format(link)
+    
     mail.send(msg)
-    return "Sent"
+    return  "sent"
+
     # msg=Message('Password Reset Request',recipients=[user.email],sender='noreply@gmail.com')
     # msg.body=  f" To reset your password follow the link . If you didn't send a password reset request. please ignore the message!{url_for('reset_token',token=token,_external=True)}"
 
@@ -183,7 +193,7 @@ def reset_token(token):
     if form.validate_on_submit():
         user.password=form.password.data
         db.session.commit()
-        flash('Password changed!Please Login!','success')
+        flash('Your Password for this account has been changed ! Please Login!','success')
         return redirect(url_for('login'))
     return render_template('change_password.html',title="Change Password",legend='Change Password',form=form)
 
@@ -197,6 +207,7 @@ def data():
     if request.method == "POST":
         f = request.form['uploadfile'] #calling the name= uploadfile object from html
         data = pd.read_excel(f)
+        flash("Your excel file is converted to export.csv and downloaded automatically on your main directory")
         return render_template('data.html',data=data.to_csv('export.csv',index=False))
     else:
         return None
@@ -217,9 +228,13 @@ def register():
     if form.validate_on_submit():
         #hashed_password = bcrypt.generate_password_hash(form.password.data)
         new_user = User(username=form.username.data,email=form.email.data, password=form.password.data)
-        db.session.add(new_user)
-        db.session.commit()
-        return redirect(url_for('login'))
+        if not new_user :
+            db.session.add(new_user)
+            db.session.commit()
+            flash('You have registered now you can log in ')
+            return redirect(url_for('login'))
+        else:
+            flash(f"This email id {new_user.email} is already registered , please use a different email id")
 
     return render_template('register.html', form=form)
 

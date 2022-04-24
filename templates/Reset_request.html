@@ -8,14 +8,24 @@
     <title>Reset Password</title>
 </head>
 
-<body>
-    <h1>Enter email id</h1>
+    <p>Please enter email id to change your password if you are registerd already </p>
 
     <form method="POST" action="">
         {{ form.hidden_tag() }}
         {{ form.email }}
         {{ form.submit }}
-    </form>
-     </body>
-
+    </form>  
+    <div class= container w-50>
+        {% with messages = get_flashed_messages() %}
+             {% if messages %}
+              <ul class=flashes>
+                 {% for message in messages %}
+                     <div class="alert alert-{{category}}">
+                         {{ message }}
+                      </div>
+                 {% endfor %}
+              </ul>
+             {% endif %}
+         {% endwith %}
+     </div>   
 </html>

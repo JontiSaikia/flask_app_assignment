@@ -9,13 +9,27 @@
 </head>
 
 <body>
-    <p><h1>Hello you are logged in.<br> Now you are able to upload the excel file <br>and download it in your backend as csv</h1></p>
+    <!--<p><h1>Hello you are logged in.<br> Now you are able to upload the excel file <br>and download it in your backend as csv</h1></p> -->
     <form class="" action="data" method="post">
         <input type="file" name="uploadfile" value=""  accept=".xlsx,.xls">
         <input type = "submit" name="" value="Submit">
     </form>
 
     <a href="{{url_for('logout')}}">Press here to logout</a>
+
+    <div class= container w-50>
+        {% with messages = get_flashed_messages() %}
+             {% if messages %}
+              <ul class=flashes>
+                 {% for message in messages %}
+                     <div class="alert alert-{{category}}">
+                         {{ message }}
+                      </div>
+                 {% endfor %}
+              </ul>
+             {% endif %}
+         {% endwith %}
+     </div>
 </body>
 
 </html>

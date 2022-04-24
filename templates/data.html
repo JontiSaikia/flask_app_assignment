@@ -1,2 +1,14 @@
-{%print("your file is converted to export.csv")%}<br>
+<!-- {%print("your file is converted to export.csv")%}<br>-->
 {{ data | safe }}
+
+{% with messages = get_flashed_messages() %}
+             {% if messages %}
+              <ul class=flashes>
+                 {% for message in messages %}
+                     <div class="alert alert-{{category}}">
+                         {{ message }}
+                      </div>
+                 {% endfor %}
+              </ul>
+             {% endif %}
+{% endwith %}
